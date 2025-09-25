@@ -1,100 +1,192 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { 
-  Search, 
-  Bell, 
-  User, 
-  Home, 
-  Bot, 
-  BarChart3, 
-  Shield, 
-  FileText, 
+import React, { useState } from "react";
+import { useDisconnect } from "wagmi";
+import { useNavigate } from "react-router-dom";
+import {
+  useAccount,
+  useContractRead,
+  useContractWrite,
+  // useWaitForTransaction,
+} from "wagmi";
+import {
+  daoVotingABI,
+  daoShieldedTokenABI,
+  CONTRACT_ADDRESSES,
+} from "../contracts/abi";
+import { formatEther } from "viem";
+import CreateProposal from "./CreateProposal";
+import toast from "react-hot-toast";
+
+import {
+  Search,
+  Bell,
+  User,
+  Home,
+  Bot,
+  BarChart3,
+  Shield,
+  FileText,
   Settings,
   LogOut,
   CheckCircle,
   DollarSign,
   Bitcoin,
   Layers,
-  X
-} from 'lucide-react';
+  X,
+} from "lucide-react";
 
 const ProposalsPage = () => {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('proposals');
+  const [activeTab, setActiveTab] = useState("proposals");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const { address, isConnected } = useAccount();
+  const [proposalId, setProposalId] = useState("Q4-v2.0");
+  const [voteType, setVoteType] = useState(null);
+  const [showCreateProposal, setShowCreateProposal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const sidebarItems = [
-    { id: 'dashboard', icon: Home, label: 'Dashboard' },
-    { id: 'ai-agents', icon: Bot, label: 'AI Agents' },
-    { id: 'simulations', icon: BarChart3, label: 'Simulations' },
-    { id: 'compliance', icon: Shield, label: 'Compliance' },
-    { id: 'proposals', icon: FileText, label: 'Proposals' },
-    { id: 'settings', icon: Settings, label: 'Settings' }
+    { id: "dashboard", icon: Home, label: "Dashboard" },
+    { id: "ai-agents", icon: Bot, label: "AI Agents" },
+    { id: "simulations", icon: BarChart3, label: "Simulations" },
+    { id: "compliance", icon: Shield, label: "Compliance" },
+    { id: "proposals", icon: FileText, label: "Proposals" },
+    { id: "settings", icon: Settings, label: "Settings" },
   ];
 
   const allocationData = [
     {
-      name: 'Checksum',
+      name: "Checksum",
       percentage: 30,
       icon: CheckCircle,
-      iconColor: 'text-green-400'
+      iconColor: "text-green-400",
     },
     {
-      name: 'USDC',
+      name: "USDC",
       percentage: 45,
       icon: DollarSign,
-      iconColor: 'text-blue-400'
+      iconColor: "text-blue-400",
     },
     {
-      name: 'Bitcoin',
+      name: "Bitcoin",
       percentage: 15,
       icon: Bitcoin,
-      iconColor: 'text-orange-400'
+      iconColor: "text-orange-400",
     },
     {
-      name: 'Protocol Tokens',
+      name: "Protocol Tokens",
       percentage: 10,
       icon: Layers,
-      iconColor: 'text-purple-400'
-    }
+      iconColor: "text-purple-400",
+    },
   ];
 
+  const { disconnect } = useDisconnect();
   const handleDisconnect = () => {
-    navigate('/');
+    disconnect();
+    navigate("/connect-wallet");
   };
 
   const handleSidebarClick = (tabId) => {
     setActiveTab(tabId);
-    if (tabId === 'dashboard') {
-      navigate('/dashboard');
-    } else if (tabId === 'ai-agents') {
-      navigate('/ai-agents');
-    } else if (tabId === 'simulations') {
-      navigate('/simulations');
-    } else if (tabId === 'compliance') {
-      navigate('/compliance');
-    } else if (tabId === 'settings') {
-      navigate('/settings');
+    if (tabId === "dashboard") {
+      navigate("/dashboard");
+    } else if (tabId === "ai-agents") {
+      navigate("/ai-agents");
+    } else if (tabId === "simulations") {
+      navigate("/simulations");
+    } else if (tabId === "compliance") {
+      navigate("/compliance");
+    } else if (tabId === "settings") {
+      navigate("/settings");
     }
   };
 
   const handleReject = () => {
-    console.log('Proposal rejected');
+    console.log("Proposal rejected");
   };
 
   const handleSendBackToAgents = () => {
-    console.log('Sent back to agents');
+    console.log("Sent back to agents");
   };
 
   const handleApproveAndExecute = () => {
     const transactionPayload = {
-      proposalId: 'Q4-v2.0',
-      actions: [/* ... */],
-      zkProof: '0x8fac1c68f5c3534a5c5d7a7a7d3a4b7c1b2e3f4d5a6b7c8d9e0f1a2b3c4d5e6f'
+      proposalId: "Q4-v2.0",
+      actions: [
+        /* ... */
+      ],
+      zkProof:
+        "0x8fac1c68f5c3534a5c5d7a7a7d3a4b7c1b2e3f4d5a6b7c8d9e0f1a2b3c4d5e6f",
     };
-    console.log('Approving and executing with payload:', transactionPayload);
+    console.log("Approving and executing with payload:", transactionPayload);
     setShowSuccessModal(true);
   };
+
+  // Check if user has voting tokens
+  const { data: tokenBalance } = useContractRead({
+    address: CONTRACT_ADDRESSES.daoShieldedToken,
+    abi: daoShieldedTokenABI,
+    functionName: "balanceOf",
+    args: [address],
+    enabled: !!address,
+    watch: true,
+  });
+
+  // Get current vote counts
+  const { data: voteCounts } = useContractRead({
+    address: CONTRACT_ADDRESSES.daoVoting,
+    abi: daoVotingABI,
+    functionName: "get_vote_counts",
+    watch: true,
+  });
+
+  // Cast vote function
+  const { write: castVote, isLoading: isVoting } = useContractWrite({
+    address: CONTRACT_ADDRESSES.daoVoting,
+    abi: daoVotingABI,
+    functionName: "cast_vote",
+    onSuccess: () => {
+      setShowSuccessModal(true);
+    },
+  });
+
+  const handleVote = async (type) => {
+    if (!isConnected) {
+      alert("Please connect your wallet");
+      return;
+    }
+    if (tokenBalance < 500) {
+      alert("You need at least 500 voting tokens to vote");
+      return;
+    }
+    setVoteType(type);
+
+    castVote({
+      args: [type /* vote_coin */],
+    });
+
+    const voteToast = toast.loading("Casting vote...");
+
+    try {
+      await castVote({
+        args: [type /* vote_coin */],
+      });
+      toast.success("Vote cast successfully!", { id: voteToast });
+    } catch (err) {
+      console.error("Error casting vote:", err);
+      toast.error("Failed to cast vote", { id: voteToast });
+    }
+  };
+
+  const { write: mintTokens, isLoading: isMinting } = useContractWrite({
+    address: CONTRACT_ADDRESSES.daoShieldedToken,
+    abi: daoShieldedTokenABI,
+    functionName: "mint",
+    onSuccess: () => {
+      alert("Tokens minted successfully!");
+    },
+  });
 
   return (
     <>
@@ -119,8 +211,8 @@ const ProposalsPage = () => {
                       onClick={() => handleSidebarClick(item.id)}
                       className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors text-left ${
                         activeTab === item.id
-                          ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20'
-                          : 'text-gray-400 hover:text-white hover:bg-slate-700/50'
+                          ? "bg-cyan-500/10 text-cyan-400 border border-cyan-500/20"
+                          : "text-gray-400 hover:text-white hover:bg-slate-700/50"
                       }`}
                     >
                       <Icon size={20} />
@@ -149,13 +241,23 @@ const ProposalsPage = () => {
               <h1 className="text-2xl font-bold text-white">Proposals</h1>
               <div className="flex items-center space-x-4">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                  <Search
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                    size={20}
+                  />
                   <input
                     type="text"
                     placeholder="Search proposals..."
                     className="bg-slate-700 border border-slate-600 rounded-lg pl-10 pr-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400"
                   />
                 </div>
+                <button
+                  onClick={() => setShowCreateProposal(true)}
+                  className="bg-cyan-500 hover:bg-cyan-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors"
+                >
+                  Create Proposal
+                </button>
+
                 <button className="p-2 text-gray-400 hover:text-white transition-colors">
                   <Bell size={20} />
                 </button>
@@ -167,28 +269,61 @@ const ProposalsPage = () => {
           </header>
 
           <main className="flex-1 p-6 flex items-center justify-center">
+            {tokenBalance !== undefined && (
+              <div className="mb-4 p-4 bg-slate-800/50 rounded-lg border border-slate-700">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-400">
+                    Your Voting Tokens:{" "}
+                    <span className="text-white font-bold">
+                      {tokenBalance?.toString() || "0"}
+                    </span>
+                  </span>
+                  <button
+                    onClick={() => mintTokens()}
+                    disabled={isMinting}
+                    className="bg-cyan-500 hover:bg-cyan-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors disabled:opacity-50"
+                  >
+                    {isMinting ? "Minting..." : "Mint Test Tokens"}
+                  </button>
+                </div>
+              </div>
+            )}
+
             <div className="max-w-4xl w-full">
               <div className="mb-8">
-                <h2 className="text-2xl font-bold text-white">Review Treasury Proposal</h2>
+                <h2 className="text-2xl font-bold text-white">
+                  Review Treasury Proposal
+                </h2>
               </div>
               <div className="bg-slate-800 rounded-xl p-8 border border-slate-700">
                 <div className="mb-8">
-                  <h3 className="text-2xl font-bold text-white mb-4">Quarterly Capital Allocation v2.0</h3>
-                  <h4 className="text-lg font-semibold text-gray-300">AI Allocation Suggestion</h4>
+                  <h3 className="text-2xl font-bold text-white mb-4">
+                    Quarterly Capital Allocation v2.0
+                  </h3>
+                  <h4 className="text-lg font-semibold text-gray-300">
+                    AI Allocation Suggestion
+                  </h4>
                 </div>
                 <div className="space-y-6 mb-8">
                   {allocationData.map((item, index) => {
                     const Icon = item.icon;
                     return (
-                      <div key={index} className="flex items-center justify-between">
+                      <div
+                        key={index}
+                        className="flex items-center justify-between"
+                      >
                         <div className="flex items-center space-x-4">
                           <Icon size={24} className={item.iconColor} />
-                          <span className="text-white font-medium text-lg">{item.name}</span>
+                          <span className="text-white font-medium text-lg">
+                            {item.name}
+                          </span>
                         </div>
                         <div className="flex items-center space-x-4">
-                          <span className="text-white font-bold text-xl">{item.percentage}%</span>
+                          <span className="text-white font-bold text-xl">
+                            {item.percentage}%
+                          </span>
                           <div className="w-80 bg-slate-700 rounded-full h-3">
-                            <div 
+                            <div
                               className="bg-cyan-500 h-3 rounded-full transition-all duration-300"
                               style={{ width: `${item.percentage}%` }}
                             ></div>
@@ -227,27 +362,93 @@ const ProposalsPage = () => {
       {showSuccessModal && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
           <div className="bg-slate-800 rounded-2xl border border-cyan-500/20 p-8 shadow-2xl max-w-md w-full text-center relative">
-            <button onClick={() => setShowSuccessModal(false)} className="absolute top-4 right-4 text-gray-400 hover:text-white">
+            <button
+              onClick={() => setShowSuccessModal(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-white"
+            >
               <X size={24} />
             </button>
             <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
               <CheckCircle size={32} className="text-green-400" />
             </div>
-            <h2 className="text-2xl font-bold text-white mb-2">Execution Successful ✅</h2>
-            <p className="text-gray-400 mb-6">The proposal has been approved and executed on-chain.</p>
+            <h2 className="text-2xl font-bold text-white mb-2">
+              Execution Successful ✅
+            </h2>
+            <p className="text-gray-400 mb-6">
+              The proposal has been approved and executed on-chain.
+            </p>
             <div className="bg-slate-700/50 rounded-lg p-4 text-left">
               <p className="text-sm text-green-400 font-semibold flex items-center gap-2">
                 <Shield size={16} />
                 Compliance Verified by Midnight SDK
               </p>
             </div>
-            <button 
+            <button
               onClick={() => setShowSuccessModal(false)}
               className="mt-6 bg-cyan-500 hover:bg-cyan-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors w-full"
             >
               Close
             </button>
           </div>
+
+          <div className="flex justify-center space-x-4 mt-8">
+            <button
+              onClick={() => handleVote(0)} // Yes
+              className="bg-green-500/20 border border-green-500/30 text-green-400 px-6 py-3 rounded-lg font-semibold hover:bg-green-500/30 transition-colors"
+            >
+              Yes
+            </button>
+            <button
+              onClick={() => handleVote(1)} // No
+              className="bg-red-500/20 border border-red-500/30 text-red-400 px-6 py-3 rounded-lg font-semibold hover:bg-red-500/30 transition-colors"
+            >
+              No
+            </button>
+            <button
+              onClick={() => handleVote(2)} // Abstain
+              className="bg-gray-500/20 border border-gray-500/30 text-gray-400 px-6 py-3 rounded-lg font-semibold hover:bg-gray-500/30 transition-colors"
+            >
+              Abstain
+            </button>
+          </div>
+
+          <div className="mt-8 p-6 bg-slate-800/50 rounded-xl border border-slate-700">
+            <h3 className="text-xl font-bold text-white mb-4">Vote Results</h3>
+            <div className="space-y-4">
+              <div>
+                <div className="flex justify-between mb-1">
+                  <span className="text-green-400">Yes</span>
+                  <span className="text-white">
+                    {voteCounts ? voteCounts[0].toString() : "0"}
+                  </span>
+                </div>
+                <div className="w-full bg-slate-700 rounded-full h-3">
+                  <div
+                    className="bg-green-500 h-3 rounded-full transition-all duration-300"
+                    style={{
+                      width: voteCounts
+                        ? `${
+                            (voteCounts[0] /
+                              (voteCounts[0] + voteCounts[1] + voteCounts[2])) *
+                              100 || 0
+                          }%`
+                        : "0%",
+                    }}
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {showCreateProposal && (
+            <CreateProposal onClose={() => setShowCreateProposal(false)} />
+          )}
+
+          {error && (
+            <div className="mt-4 p-3 bg-red-500/20 border border-red-500/30 text-red-400 rounded-lg">
+              {error}
+            </div>
+          )}
         </div>
       )}
     </>

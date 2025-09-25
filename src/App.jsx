@@ -16,6 +16,8 @@ import { WagmiConfig } from 'wagmi';
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { config, queryClient } from './wallet';
+import { Toaster } from 'react-hot-toast';
+
 
 function LandingPage() {
   return (
@@ -49,6 +51,7 @@ function App() {
           </Router>
         </RainbowKitProvider>
       </QueryClientProvider>
+      <Toaster position="top-right" />
     </WagmiConfig>
   );
 }
