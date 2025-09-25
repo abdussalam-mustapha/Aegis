@@ -7,10 +7,10 @@ export default {
   theme: {
     extend: {
       colors: {
-        'aegis-blue': '#1e40af',
-        'aegis-cyan': '#00e5ff',
-        'aegis-purple': '#8b5cf6',
-        'aegis-dark': '#0f172a',
+        'privacyhub-blue': '#1e40af',
+        'privacyhub-cyan': '#00e5ff',
+        'privacyhub-purple': '#8b5cf6',
+        'privacyhub-dark': '#0f172a',
       },
       fontFamily: {
         'mono': ['JetBrains Mono', 'monospace'],

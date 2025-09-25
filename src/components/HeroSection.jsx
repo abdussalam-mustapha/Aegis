@@ -89,7 +89,7 @@ const HeroSection = () => {
       <div className="absolute inset-0 z-0">
         <motion.img 
           src="/hero-image.png" 
-          alt="Aegis AI Treasury - Futuristic robots with digital portal" 
+          alt="Privacy Hub AI Treasury - Futuristic robots with digital portal" 
           className="w-full h-full object-cover"
           initial={{ scale: 1.1, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -260,7 +260,7 @@ const HeroSection = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
             >
-              Aegis
+              Privacy Hub
             </motion.span>{' '}
             <motion.span 
               className="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-500 bg-clip-text text-transparent drop-shadow-lg"

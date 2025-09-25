@@ -6,7 +6,7 @@ const CorePrinciples = () => {
     {
       icon: <Shield className="w-8 h-8 text-cyan-400" />,
       title: "Privacy-First Design",
-      description: "Aegis Treasury AI is built from the ground up with robust privacy protocols, ensuring your financial data remains secure and confidential at all times."
+      description: "Privacy Hub is built from the ground up with robust privacy protocols, ensuring your financial data remains secure and confidential at all times."
     },
     {
       icon: <TrendingUp className="w-8 h-8 text-cyan-400" />,

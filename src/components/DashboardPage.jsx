@@ -19,7 +19,8 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 
 const DashboardPage = () => {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('dashboard');
+    const [activeTab, setActiveTab] = useState('dashboard');
+  const [complianceStatus, setComplianceStatus] = useState('Proof Generated'); // 'Proof Generated' or 'Pending Compliance'
 
   // Sample data for portfolio allocation
   const portfolioData = [
@@ -80,7 +81,7 @@ const DashboardPage = () => {
             <div className="w-8 h-8 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">A</span>
             </div>
-            <span className="text-white font-bold text-lg">AegisTreasuryAI</span>
+            <span className="text-white font-bold text-lg">PrivacyHub</span>
           </div>
         </div>
 
@@ -241,9 +242,19 @@ const DashboardPage = () => {
                     </div>
                   </div>
                 </div>
-                <button className="bg-green-500/10 border border-green-500/20 text-green-400 px-4 py-2 rounded-lg text-sm hover:bg-green-500/20 transition-colors">
-                  Review Full Proposal
-                </button>
+                <div className="flex items-center space-x-4">
+                  <button className="bg-green-500/10 border border-green-500/20 text-green-400 px-4 py-2 rounded-lg text-sm hover:bg-green-500/20 transition-colors">
+                    Review Full Proposal
+                  </button>
+                  <button 
+                    onClick={() => handleSidebarClick('compliance')}
+                    className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm border ${complianceStatus === 'Proof Generated' 
+                      ? 'bg-green-500/10 text-green-400 border-green-500/20'
+                      : 'bg-red-500/10 text-red-400 border-red-500/20'}`}>
+                    {complianceStatus === 'Proof Generated' ? <CheckCircle size={14} /> : <Shield size={14} />}
+                    <span>{complianceStatus === 'Proof Generated' ? 'Proof Generated' : 'Pending Compliance'}</span>
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -260,7 +271,7 @@ const DashboardPage = () => {
                     </p>
                   </div>
                 </div>
-                <button className="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg text-sm transition-colors flex items-center space-x-2">
+                <button onClick={() => handleSidebarClick('compliance')} className="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg text-sm transition-colors flex items-center space-x-2">
                   <span>View Compliance Report</span>
                   <ExternalLink size={14} />
                 </button>

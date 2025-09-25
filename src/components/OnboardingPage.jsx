@@ -221,7 +221,7 @@ const OnboardingPage = () => {
               transition: { duration: 0.3 }
             }}
           >
-            Aegis Treasury
+            Privacy Hub
           </motion.span>
           <br />
           <motion.span 

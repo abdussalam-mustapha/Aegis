@@ -1,14 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAccount } from 'wagmi';
 import { ArrowLeft, Wallet } from 'lucide-react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import useAutoNavigateDashboard from '../hooks/useAutoNavigateDashboard';
 
 const ConnectWalletPage = () => {
   const navigate = useNavigate();
-
+  const { isConnected, address } = useAccount();
 
   useAutoNavigateDashboard();
+
+  useEffect(() => {
+    if (isConnected && address) {
+      console.log('Wallet connected. Initializing Midnight SDK session for address:', address);
+      // In a real implementation, you would initialize the Midnight SDK here.
+      // For example: initializeMidnight({ walletAddress: address });
+    }
+  }, [isConnected, address]);
 
   const handleBack = () => {
     navigate('/onboarding');

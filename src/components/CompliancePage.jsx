@@ -22,6 +22,13 @@ const CompliancePage = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('compliance');
 
+  const [proofData, setProofData] = useState({
+    status: 'Validated',
+    proofHash: '0x8fac1c68f5c3534a5c5d7a7a7d3a4b7c1b2e3f4d5a6b7c8d9e0f1a2b3c4d5e6f',
+    artifactUrl: 'https://ipfs.io/ipfs/QmExampleHash',
+    rule: '≥40% stablecoins',
+  });
+
   const sidebarItems = [
     { id: 'dashboard', icon: Home, label: 'Dashboard' },
     { id: 'ai-agents', icon: Bot, label: 'AI Agents' },
@@ -72,26 +79,6 @@ const CompliancePage = () => {
       bgColor: 'bg-green-500/10',
       borderColor: 'border-green-500/20'
     },
-    {
-      rule: 'Bridge Protocol Usage < 5%',
-      status: 'Pass',
-      current: '3.2%',
-      limit: '5%',
-      icon: CheckCircle,
-      statusColor: 'text-green-400',
-      bgColor: 'bg-green-500/10',
-      borderColor: 'border-green-500/20'
-    },
-    {
-      rule: 'Approved Protocol List Adherence',
-      status: 'Pass',
-      current: '100%',
-      limit: '100%',
-      icon: CheckCircle,
-      statusColor: 'text-green-400',
-      bgColor: 'bg-green-500/10',
-      borderColor: 'border-green-500/20'
-    }
   ];
 
   const handleDisconnect = () => {
@@ -114,26 +101,25 @@ const CompliancePage = () => {
   };
 
   const generateReport = () => {
-    // Generate report logic would go here
     console.log('Generating compliance report...');
   };
 
   return (
     <div className="min-h-screen bg-slate-900 flex">
       {/* Sidebar */}
-      <div className="w-64 bg-slate-800 border-r border-slate-700">
+      <div className="w-64 bg-slate-800 border-r border-slate-700 flex flex-col">
         {/* Logo */}
         <div className="p-6 border-b border-slate-700">
           <div className="flex items-center space-x-3">
             <div className="w-8 h-8 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">A</span>
             </div>
-            <span className="text-white font-bold text-lg">AegisTreasuryAI</span>
+            <span className="text-white font-bold text-lg">PrivacyHub</span>
           </div>
         </div>
 
         {/* Navigation */}
-        <nav className="p-4">
+        <nav className="p-4 flex-1">
           <ul className="space-y-2">
             {sidebarItems.map((item) => {
               const Icon = item.icon;
@@ -157,7 +143,7 @@ const CompliancePage = () => {
         </nav>
 
         {/* Disconnect Button */}
-        <div className="absolute bottom-4 left-4 right-4">
+        <div className="p-4 border-t border-slate-700">
           <button
             onClick={handleDisconnect}
             className="w-full flex items-center space-x-3 px-4 py-3 bg-red-500/10 text-red-400 border border-red-500/20 rounded-lg hover:bg-red-500/20 transition-colors"
@@ -174,9 +160,7 @@ const CompliancePage = () => {
         <header className="bg-slate-800 border-b border-slate-700 px-6 py-4">
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-bold text-white">Compliance</h1>
-            
             <div className="flex items-center space-x-4">
-              {/* Search */}
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
                 <input
@@ -185,13 +169,9 @@ const CompliancePage = () => {
                   className="bg-slate-700 border border-slate-600 rounded-lg pl-10 pr-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400"
                 />
               </div>
-              
-              {/* Notifications */}
               <button className="p-2 text-gray-400 hover:text-white transition-colors">
                 <Bell size={20} />
               </button>
-              
-              {/* Profile */}
               <button className="p-2 bg-slate-700 rounded-lg text-gray-400 hover:text-white transition-colors">
                 <User size={20} />
               </button>
@@ -200,22 +180,51 @@ const CompliancePage = () => {
         </header>
 
         {/* Content */}
-        <div className="flex-1 p-6">
+        <main className="flex-1 p-6 overflow-y-auto">
           <div className="max-w-6xl mx-auto space-y-6">
-            {/* Page Title */}
             <div>
               <h2 className="text-2xl font-bold text-white mb-2">Compliance Report</h2>
             </div>
 
-            {/* Compliance Status Banner */}
-            <div className="bg-slate-800 rounded-xl border border-red-500/20 p-8 text-center">
-              <div className="flex flex-col items-center space-y-4">
-                <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center border border-red-500/30">
-                  <AlertTriangle size={32} className="text-red-400" />
+            {/* Midnight SDK Proof Validation */}
+            <div className="bg-slate-800 rounded-xl border border-cyan-500/20 p-6">
+              <h3 className="text-xl font-semibold text-white mb-4">Midnight SDK Proof Validation</h3>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between pb-4 border-b border-slate-700">
+                  <div className="flex items-center gap-3">
+                    <CheckCircle size={24} className="text-green-400" />
+                    <span className="text-lg font-semibold text-green-400">Proof Validated</span>
+                  </div>
+                  <p className="text-gray-400 text-sm">Last Verified: 2024-07-26, 14:30 UTC</p>
                 </div>
-                <div>
-                  <h3 className="text-2xl font-bold text-red-400 mb-2">DAO Treasury is Non-Compliant</h3>
-                  <p className="text-gray-400">Last Verified: 2024-07-26, 14:30 UTC</p>
+
+                <div className="space-y-3 text-sm">
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400">Rule Verified:</span>
+                    <span className="text-white font-mono bg-slate-700 px-2 py-1 rounded">{proofData.rule} → Verified</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400">Proof Hash:</span>
+                    <span className="text-white font-mono bg-slate-700 px-2 py-1 rounded truncate max-w-xs">
+                      {proofData.proofHash}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400">Verification Status:</span>
+                    <span className="text-green-400 font-semibold">{proofData.status}</span>
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t border-slate-700">
+                  <a 
+                    href={proofData.artifactUrl} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2 text-cyan-400 hover:text-cyan-300 transition-colors"
+                  >
+                    <span>View Artifact</span>
+                    <ExternalLink size={16} />
+                  </a>
                 </div>
               </div>
             </div>
@@ -226,7 +235,6 @@ const CompliancePage = () => {
               <div className="lg:col-span-2">
                 <div className="bg-slate-800 rounded-xl p-6">
                   <h3 className="text-xl font-semibold text-white mb-6">Compliance Rules</h3>
-                  
                   <div className="space-y-4">
                     {complianceRules.map((rule, index) => {
                       const Icon = rule.icon;
@@ -236,7 +244,6 @@ const CompliancePage = () => {
                             <Icon size={20} className={rule.statusColor} />
                             <span className="text-white font-medium">{rule.rule}</span>
                           </div>
-                          
                           <div className="flex items-center space-x-4">
                             <div className="text-right">
                               <div className={`px-3 py-1 rounded-full text-sm font-medium ${
@@ -247,7 +254,6 @@ const CompliancePage = () => {
                                 {rule.status}
                               </div>
                             </div>
-                            
                             <div className="text-right min-w-[120px]">
                               <div className="text-white text-sm">
                                 Current: <span className={rule.status === 'Pass' ? 'text-green-400' : 'text-red-400'}>{rule.current}</span>
@@ -268,7 +274,6 @@ const CompliancePage = () => {
               <div className="lg:col-span-1">
                 <div className="bg-slate-800 rounded-xl p-6">
                   <h3 className="text-xl font-semibold text-white mb-6">Export Report</h3>
-                  
                   <div className="space-y-4">
                     <button
                       onClick={generateReport}
@@ -277,7 +282,6 @@ const CompliancePage = () => {
                       <Download size={16} />
                       <span>Generate & Export</span>
                     </button>
-                    
                     <div className="text-center">
                       <p className="text-gray-400 text-sm">Available formats: PDF, IPFS Link.</p>
                     </div>
@@ -285,20 +289,8 @@ const CompliancePage = () => {
                 </div>
               </div>
             </div>
-
-            {/* Privacy Notice */}
-            <div className="bg-slate-800 rounded-xl p-6 border border-slate-700">
-              <div className="flex items-center space-x-3">
-                <div className="w-6 h-6 border border-gray-400 rounded-full flex items-center justify-center">
-                  <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
-                </div>
-                <p className="text-gray-400 text-sm">
-                  Generated with Midnight.js privacy tools, ensuring zero-knowledge proof verification.
-                </p>
-              </div>
-            </div>
           </div>
-        </div>
+        </main>
       </div>
     </div>
   );

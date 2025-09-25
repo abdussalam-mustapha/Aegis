@@ -19,7 +19,7 @@ const Footer = () => {
             <div className="flex items-center space-x-3">
               <img 
                 src="/aeges_logo.png" 
-                alt="Aegis Logo" 
+                alt="Privacy Hub Logo" 
                 className="w-8 h-8 object-contain"
                 onError={(e) => {
                   console.log('Footer logo failed to load:', e.target.src);
@@ -31,7 +31,7 @@ const Footer = () => {
               <div className="w-8 h-8 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-lg items-center justify-center hidden">
                 <span className="text-white font-bold text-sm">A</span>
               </div>
-              <span className="text-xl font-bold text-white">Aegis</span>
+              <span className="text-xl font-bold text-white">Privacy Hub</span>
             </div>
             <p className="text-gray-400 text-xs leading-relaxed">
               Revolutionizing digital finance with intelligent, secure, and scalable AI solutions for tomorrow's economy.
@@ -75,7 +75,7 @@ const Footer = () => {
         {/* Bottom Section */}
         <div className="max-w-7xl mx-auto mt-8 pt-6 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-xs">
-            © {currentYear} Aegis Treasury AI. All rights reserved.
+            © {currentYear} Privacy Hub. All rights reserved.
           </p>
           <p className="text-gray-500 text-xs mt-2 md:mt-0">
             Viewed with 💜 by V9aly

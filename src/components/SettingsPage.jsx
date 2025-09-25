@@ -74,7 +74,7 @@ const SettingsPage = () => {
             <div className="w-8 h-8 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">A</span>
             </div>
-            <span className="text-white font-bold text-lg">AegisTreasuryAI</span>
+            <span className="text-white font-bold text-lg">PrivacyHub</span>
           </div>
         </div>
 

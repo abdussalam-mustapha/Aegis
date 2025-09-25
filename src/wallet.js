@@ -4,7 +4,7 @@ import { QueryClient } from '@tanstack/react-query';
 import { mainnet, polygon, optimism, arbitrum, base } from 'wagmi/chains';
 
 export const config = getDefaultConfig({
-  appName: 'Aegis Treasury',
+  appName: 'Privacy Hub',
   projectId: 'YOUR_WALLETCONNECT_PROJECT_ID', // Replace with your WalletConnect Project ID
   chains: [mainnet, polygon, optimism, arbitrum, base],
   ssr: false,

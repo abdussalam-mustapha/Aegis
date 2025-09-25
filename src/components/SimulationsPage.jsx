@@ -143,7 +143,7 @@ const SimulationsPage = () => {
             <div className="w-8 h-8 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">A</span>
             </div>
-            <span className="text-white font-bold text-lg">AegisTreasuryAI</span>
+            <span className="text-white font-bold text-lg">PrivacyHub</span>
           </div>
         </div>
 
@@ -463,7 +463,7 @@ const SimulationsPage = () => {
               <div className="bg-slate-800 rounded-xl p-6">
                 <h3 className="text-lg font-semibold text-white mb-4">AI Recommendation Insights</h3>
                 <p className="text-gray-300 text-sm leading-relaxed">
-                  Based on the simulated market conditions, the Aegis AI recommends a strategic rebalancing to optimize for projected 
+                  Based on the simulated market conditions, the Privacy Hub AI recommends a strategic rebalancing to optimize for projected 
                   growth and mitigate risk. Specifically, a higher allocation to Other is suggested given the positive outlook for the sector 
                   and the potential for increased yield over the selected time horizon. This rebalancing aims to align the treasury with 
                   market opportunities while ensuring compliance with established risk parameters. Visit the AI 

@@ -11,11 +11,11 @@ const Header = () => {
             <div className="w-8 h-8 relative">
               <img 
                 src={AegesLogo} 
-                alt="Aegis Logo" 
+                alt="Privacy Hub Logo" 
                 className="w-full h-full object-contain"
               />
             </div>
-            {/* <span className="text-xl font-bold text-white">Aegis</span> */}
+            {/* <span className="text-xl font-bold text-white">Privacy Hub</span> */}
           </div>
           
           {/* Navigation */}
