@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "prebuild": "rm -rf dist",
-    "build": "rm -rf dist && echo BEFORE && ls -la && vite build && echo AFTER && ls -la dist",
+    "build": "rm -rf build dist && vite build --outDir build",
     "dev": "vite",
     "lint": "eslint .",
     "preview": "vite preview"
