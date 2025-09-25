@@ -1,4 +1,5 @@
 import { Shield, TrendingUp, Zap } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const CorePrinciples = () => {
   const principles = [
@@ -19,29 +20,73 @@ const CorePrinciples = () => {
     }
   ];
 
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: 0.6,
+        staggerChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut"
+      }
+    }
+  };
+
   return (
-    <section className="py-16 bg-gradient-to-b from-slate-900 to-black">
+    <motion.section 
+      className="py-16 bg-gradient-to-b from-slate-900 to-black"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-100px" }}
+      variants={containerVariants}
+    >
       <div className="w-full px-6">
         {/* Section Title */}
-        <div className="text-center mb-12">
+        <motion.div className="text-center mb-12" variants={itemVariants}>
           <h2 className="text-3xl md:text-4xl font-bold text-transparent bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text mb-4">
             Core Principles
           </h2>
-        </div>
+        </motion.div>
         
         {/* Principles Grid */}
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+        <motion.div 
+          className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8"
+          variants={containerVariants}
+        >
           {principles.map((principle, index) => (
-            <div 
+            <motion.div 
               key={index}
-              className="group relative bg-gradient-to-br from-slate-800/40 to-slate-900/40 backdrop-blur-sm border border-cyan-500/20 rounded-xl p-6 hover:border-cyan-400/40 transition-all duration-300 hover:transform hover:scale-105"
+              className="group relative bg-gradient-to-br from-slate-800/40 to-slate-900/40 backdrop-blur-sm border border-cyan-500/20 rounded-xl p-6 hover:border-cyan-400/40 transition-all duration-300"
+              variants={itemVariants}
+              whileHover={{ 
+                scale: 1.05, 
+                transition: { duration: 0.2 } 
+              }}
             >
               {/* Content */}
               <div className="relative z-10 text-center">
                 {/* Icon */}
-                <div className="mb-4 flex justify-center transform group-hover:scale-110 transition-transform duration-300">
+                <motion.div 
+                  className="mb-4 flex justify-center"
+                  whileHover={{ 
+                    scale: 1.1, 
+                    transition: { duration: 0.2 } 
+                  }}
+                >
                   {principle.icon}
-                </div>
+                </motion.div>
                 
                 {/* Title */}
                 <h3 className="text-lg font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">
@@ -53,11 +98,11 @@ const CorePrinciples = () => {
                   {principle.description}
                 </p>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

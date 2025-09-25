@@ -1,4 +1,5 @@
 import { Cpu, BarChart3 } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const AdvancedBenefits = () => {
   const benefits = [
@@ -14,33 +15,74 @@ const AdvancedBenefits = () => {
     }
   ];
 
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: 0.6,
+        staggerChildren: 0.3
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut"
+      }
+    }
+  };
+
   return (
-    <section className="py-16 bg-black">
+    <motion.section 
+      className="py-16 bg-black"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-100px" }}
+      variants={containerVariants}
+    >
       <div className="w-full px-6">
         {/* Section Title */}
-        <div className="text-center mb-12">
+        <motion.div className="text-center mb-12" variants={itemVariants}>
           <h2 className="text-3xl md:text-4xl font-bold text-transparent bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text mb-4">
             Advanced Benefits
           </h2>
-        </div>
+        </motion.div>
         
         {/* Benefits Grid */}
-        <div className="max-w-7xl mx-auto">
+        <motion.div className="max-w-7xl mx-auto" variants={containerVariants}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start mb-8">
             {benefits.map((benefit, index) => (
-              <div 
+              <motion.div 
                 key={index}
                 className="group relative"
+                variants={itemVariants}
+                whileHover={{ 
+                  scale: 1.05, 
+                  transition: { duration: 0.2 } 
+                }}
               >
                 {/* Background Card */}
-                <div className="relative bg-gradient-to-br from-slate-800/30 to-slate-900/30 backdrop-blur-sm border border-cyan-500/20 rounded-xl p-6 hover:border-cyan-400/40 transition-all duration-500 hover:transform hover:scale-105">
+                <div className="relative bg-gradient-to-br from-slate-800/30 to-slate-900/30 backdrop-blur-sm border border-cyan-500/20 rounded-xl p-6 hover:border-cyan-400/40 transition-all duration-500">
                   
                   {/* Content */}
                   <div className="relative z-10 text-center">
                     {/* Icon */}
-                    <div className="mb-4 flex justify-center transform group-hover:scale-110 transition-transform duration-300">
+                    <motion.div 
+                      className="mb-4 flex justify-center"
+                      whileHover={{ 
+                        scale: 1.1, 
+                        transition: { duration: 0.2 } 
+                      }}
+                    >
                       {benefit.icon}
-                    </div>
+                    </motion.div>
                     
                     {/* Title */}
                     <h3 className="text-xl md:text-2xl font-bold text-white mb-4 group-hover:text-cyan-400 transition-colors">
@@ -53,21 +95,37 @@ const AdvancedBenefits = () => {
                     </p>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
             
           {/* Third Card - Coming Soon */}
-          <div className="flex justify-center">
-            <div className="relative bg-gradient-to-br from-slate-800/20 to-slate-900/20 backdrop-blur-sm border border-cyan-500/10 rounded-xl p-6 text-center max-w-md">
+          <motion.div 
+            className="flex justify-center"
+            variants={itemVariants}
+          >
+            <motion.div 
+              className="relative bg-gradient-to-br from-slate-800/20 to-slate-900/20 backdrop-blur-sm border border-cyan-500/10 rounded-xl p-6 text-center max-w-md"
+              whileHover={{ 
+                scale: 1.02,
+                borderColor: "rgba(34, 211, 238, 0.2)",
+                transition: { duration: 0.2 } 
+              }}
+            >
               <div className="relative z-10">
-                <h3 className="text-lg font-bold text-gray-400 mb-2">More innovations coming soon...</h3>
+                <motion.h3 
+                  className="text-lg font-bold text-gray-400 mb-2"
+                  animate={{ opacity: [0.6, 1, 0.6] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  More innovations coming soon...
+                </motion.h3>
               </div>
-            </div>
-          </div>
-        </div>
+            </motion.div>
+          </motion.div>
+        </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

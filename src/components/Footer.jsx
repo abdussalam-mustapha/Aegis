@@ -16,8 +16,19 @@ const Footer = () => {
           
           {/* Brand Section */}
           <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-lg flex items-center justify-center">
+            <div className="flex items-center space-x-3">
+              <img 
+                src="/aeges_logo.png" 
+                alt="Aegis Logo" 
+                className="w-8 h-8 object-contain"
+                onError={(e) => {
+                  console.log('Footer logo failed to load:', e.target.src);
+                  // Fallback to gradient background
+                  e.target.style.display = 'none';
+                  e.target.nextElementSibling.style.display = 'flex';
+                }}
+              />
+              <div className="w-8 h-8 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-lg items-center justify-center hidden">
                 <span className="text-white font-bold text-sm">A</span>
               </div>
               <span className="text-xl font-bold text-white">Aegis</span>
