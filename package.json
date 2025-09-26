@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "prebuild": "rm -rf dist",
-    "build": "rm -rf build dist && vite build --outDir build",
+    "build": "vite build",
+    "vercel-build": "rm -rf .vercel_build_output build dist && vite build --outDir build",
     "dev": "vite",
     "lint": "eslint .",
     "preview": "vite preview"
