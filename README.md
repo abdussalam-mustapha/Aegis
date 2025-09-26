@@ -111,7 +111,6 @@ The Privacy Hub architecture will be modular, scalable, and privacy-centric:
 2. **Backend (Planned)**
 	- Node.js/Express API for business logic and data management
 	- PostgreSQL for persistent storage
-	- Python microservices for AI/ML and compliance
 	- Privacy modules (Midnight SDK, ZK proofs)
 
 3. **Smart Contracts**
