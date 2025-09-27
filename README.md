@@ -104,11 +104,11 @@ Privacy Hub will evolve to include a robust backend supporting advanced privacy,
 
 The Privacy Hub architecture will be modular, scalable, and privacy-centric:
 
-1. **Frontend (Current)**
+1. **Frontend**
 	- React SPA with wallet integration, dashboard, and proposal system
 	- Direct EVM interaction for wallet and contract calls
 
-2. **Backend (Planned)**
+2. **Backend **
 	- Node.js/Express API for business logic and data management
 	- PostgreSQL for persistent storage
 	- Privacy modules (Midnight SDK, ZK proofs)
