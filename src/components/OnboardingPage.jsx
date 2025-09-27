@@ -287,57 +287,6 @@ const OnboardingPage = () => {
         </motion.button>
       </motion.div>
       
-      {/* Enhanced bottom attribution */}
-      <motion.div 
-        className="absolute bottom-4 left-4 text-xs text-gray-500 flex items-center gap-2"
-        initial={{ opacity: 0, y: 30, rotateX: -90 }}
-        animate={{ opacity: 1, y: 0, rotateX: 0 }}
-        transition={{ 
-          type: "spring",
-          stiffness: 100,
-          damping: 15,
-          duration: 0.8, 
-          delay: 1.5 
-        }}
-        whileHover={{
-          scale: 1.1,
-          y: -5,
-          transition: { duration: 0.3 }
-        }}
-      >
-        <span>Made with</span>
-        <div className="flex items-center gap-1">
-          <motion.span 
-            className="text-purple-400"
-            animate={{ 
-              scale: [1, 1.4, 1],
-              rotate: [0, 10, -10, 0]
-            }}
-            transition={{ 
-              duration: 3, 
-              repeat: Infinity, 
-              ease: "easeInOut" 
-            }}
-            whileHover={{
-              scale: 1.8,
-              rotate: 360,
-              transition: { duration: 0.5 }
-            }}
-          >
-            💜
-          </motion.span>
-          <motion.span 
-            className="text-cyan-400 font-medium"
-            whileHover={{
-              scale: 1.1,
-              textShadow: "0 0 10px rgba(6, 182, 212, 0.6)",
-              transition: { duration: 0.3 }
-            }}
-          >
-            Visily
-          </motion.span>
-        </div>
-      </motion.div>
     </motion.div>
   );
 };

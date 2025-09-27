@@ -4,12 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "prebuild": "rm -rf dist",
-    "build": "vite build",
-    "vercel-build": "rm -rf .vercel_build_output build dist && vite build --outDir build",
     "dev": "vite",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "build": "vite build --outDir build",
+    "preview": "vite preview",
+    "lint": "eslint ."
   },
   "dependencies": {
     "@midnight-ntwrk/midnight-js-contracts": "^2.0.2",

@@ -69,14 +69,6 @@ const ConnectWalletPage = () => {
           </div>
         </div>
       </div>
-      {/* Bottom attribution */}
-      <div className="absolute bottom-4 left-4 text-xs text-gray-500 flex items-center gap-2">
-        <span>Made with</span>
-        <div className="flex items-center gap-1">
-          <span className="text-purple-400">💜</span>
-          <span className="text-cyan-400 font-medium">Visily</span>
-        </div>
-      </div>
     </div>
   );
 };
