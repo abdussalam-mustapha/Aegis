@@ -88,7 +88,7 @@ Privacy Hub is a next-generation, privacy-first AI co-pilot for DAO treasuries. 
 MIT
 
 
-## Backend Implementation Plans
+## Backend Implementation 
 
 Privacy Hub will evolve to include a robust backend supporting advanced privacy, compliance, and AI features. Planned backend components:
 
